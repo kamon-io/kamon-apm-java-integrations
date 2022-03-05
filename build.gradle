@@ -47,9 +47,9 @@ subprojects {
             }
 
             scm {
-              connection = 'scm:git:git://github.com:kamon-io/kamon-apm-jvm-clients.git'
-              developerConnection = 'scm:git:ssh://github.com:kamon-io/kamon-apm-jvm-clients.git'
-              url = 'https://kamon.io/'
+              connection = 'scm:git:git://github.com:kamon-io/kamon-apm-java-integrations.git'
+              developerConnection = 'scm:git:ssh://github.com:kamon-io/kamon-apm-java-integrations.git'
+              url = 'https://github.com/kamon-io/kamon-apm-java-integrations'
             }
           }
         }
