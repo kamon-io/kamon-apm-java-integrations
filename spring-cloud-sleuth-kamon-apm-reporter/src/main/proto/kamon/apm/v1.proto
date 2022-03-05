@@ -1,0 +1,64 @@
+syntax = "proto2";
+
+package kamon.apm.ingestion.v1.traces;
+option java_package = "kamon.apm.ingestion.v1.traces";
+option java_multiple_files = true;
+
+message SpanBatch {
+  required string serviceName = 1;
+  required string apiKey = 2;
+  required string host = 3;
+  required string instance = 4;
+  repeated Span spans = 5;
+  optional string agent = 6;
+}
+
+message Span {
+  required string id = 1;
+  required string traceId = 2;
+  required string parentId = 3;
+  required string operationName = 4;
+  required int64 startMicros = 5;
+  required int64 endMicros = 6;
+  map<string, string> tags = 7;
+  repeated Mark marks = 8;
+
+  // Fields added since Kamon 2.0
+  optional bool hasError = 9;
+  optional bool wasDelayed = 10;
+  optional SpanKind kind = 11;
+  optional SpanPosition position = 12;
+  map<string, string> metricTags = 13;
+  repeated Link links = 14;
+}
+
+message Mark {
+  required int64 instant = 1;
+  required string key = 2;
+}
+
+message Link {
+  required LinkKind kind = 1;
+  required string traceId = 2;
+  required string spanId = 3;
+}
+
+enum SpanKind {
+  UNKNOWN = 0;
+  SERVER = 1;
+  CLIENT = 2;
+  PRODUCER = 3;
+  CONSUMER = 4;
+  INTERNAL = 5;
+}
+
+enum SpanPosition {
+  POSITION_UNKNOWN = 0;
+  ROOT = 1;
+  LOCAL_ROOT = 2;
+}
+
+enum LinkKind {
+  FOLLOWS_FROM = 1;
+}
+

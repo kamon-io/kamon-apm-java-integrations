@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+kamon.apm.KamonApmMetricsExportConfiguration,\
+kamon.apm.KamonApmSpansExportConfiguration

@@ -1,0 +1,72 @@
+allprojects {
+  apply plugin: 'java'
+  apply plugin: 'signing'
+  apply plugin: 'maven-publish'
+
+  group = 'io.kamon'
+  version = '1.0.0-alpha1'
+
+  task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set("sources")
+    from sourceSets.main.allSource
+  }
+
+  compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+  }
+
+  publishing {
+    publications {
+      mavenPublication(MavenPublication) {
+        from components.java
+        artifact sourcesJar
+
+        pom {
+          url = 'https://kamon.io'
+
+          licenses {
+            license {
+              name = 'The Apache License, Version 2.0'
+              url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+              distribution = 'repo'
+            }
+
+            developers {
+              developer {
+                id = 'ivantopo'
+                name = 'Ivan Topolnjak'
+                email = 'ivantopo@kamon.io'
+              }
+            }
+
+            scm {
+              connection = 'scm:git:git://github.com:kamon-io/kamon-apm-jvm-clients.git'
+              developerConnection = 'scm:git:ssh://github.com:kamon-io/kamon-apm-jvm-clients.git'
+              url = 'https://kamon.io/'
+            }
+          }
+        }
+      }
+    }
+
+    repositories {
+      maven {
+        credentials {
+          def user = project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : System.getenv('SONATYPE_USER')
+          def pass = project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : System.getenv('SONATYPE_PASS')
+
+          username user as String
+          password pass as String
+        }
+
+        url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+      }
+
+    }
+  }
+
+  signing {
+    sign publishing.publications.mavenPublication
+  }
+}

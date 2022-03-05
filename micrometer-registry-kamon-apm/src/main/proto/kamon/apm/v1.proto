@@ -1,0 +1,67 @@
+syntax = "proto2";
+
+package kamon.apm.ingestion.v1.metrics;
+option java_package = "kamon.apm.ingestion.v1.metrics";
+option java_multiple_files = true;
+
+message MetricBatch {
+  required Interval interval = 1;
+  required string apiKey = 2;
+  required string service = 3;
+  required string host = 4;
+  required string instance = 5;
+  repeated Metric metrics = 6;
+  optional string agent = 8;
+}
+
+message Interval {
+  required int64 from = 1;
+  required int64 to = 2;
+}
+
+message Metric {
+  required string name = 1;
+  map<string, string> tags = 2;
+  required InstrumentType instrumentType = 3;
+  required bytes data = 4;
+}
+
+enum InstrumentType {
+  COUNTER = 0;
+  GAUGE = 1;
+  HISTOGRAM = 2;
+  MIN_MAX_COUNTER = 3;
+}
+
+message NodeIdentity {
+  required string service = 1;
+  required string instance = 2;
+  required string host = 3;
+  required string apiKey = 4;
+  optional string agent = 5;
+}
+
+message Hello {
+  required NodeIdentity node = 1;
+  required int64 time = 2;
+  required string incarnation = 3;
+  required string version = 4;
+}
+
+message Goodbye {
+  required NodeIdentity node = 1;
+  required int64 time = 2;
+}
+
+enum IngestionStatus {
+  OK = 0;
+  ERROR = 1;
+  STALE = 2;
+  UNAUTHORIZED = 3;
+  BLOCKED = 4;
+  CORRUPTED = 5;
+}
+
+message IngestionResponse {
+  required IngestionStatus status = 1;
+}

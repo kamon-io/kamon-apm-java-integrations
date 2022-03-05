@@ -1,0 +1,5 @@
+rootProject.name = "kamon-apm-java-integrations"
+include "spring-boot-starter-kamon-apm"
+include "spring-boot-kamon-apm-autoconfigure"
+include "micrometer-registry-kamon-apm"
+include "spring-cloud-sleuth-kamon-apm-reporter"
